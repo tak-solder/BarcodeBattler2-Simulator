@@ -1,0 +1,38 @@
+{
+  "name": "barcode-battler-ii-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json",
+    "test": "node --import tsx tests/engine.test.ts",
+    "check": "npm run typecheck && npm test && npm run build && wrangler deploy --dry-run",
+    "db:local": "wrangler d1 migrations apply DB --local",
+    "db:remote": "wrangler d1 migrations apply DB --remote",
+    "deploy": "npm run build && wrangler deploy",
+    "port": "node scripts/port-engine.mjs",
+    "test:e2e": "playwright test",
+    "predeploy": "node scripts/check-deploy.mjs"
+  },
+  "dependencies": {
+    "@zxing/browser": "0.2.1",
+    "@zxing/library": "0.23.0"
+  },
+  "devDependencies": {
+    "@babel/core": "8.0.9",
+    "@babel/plugin-transform-typescript": "8.0.6",
+    "@cloudflare/workers-types": "5.20261026.1",
+    "@playwright/test": "1.64.1",
+    "@types/node": "26.6.5",
+    "prettier": "3.9.10",
+    "tsx": "4.23.15",
+    "typescript": "7.0.2",
+    "vite": "8.3.5",
+    "wrangler": "4.152.0"
+  }
+}
