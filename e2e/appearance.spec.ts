@@ -177,3 +177,37 @@ test("C1 campaign and cloud save survive switching designs", async ({
   expect(await progress(page)).toEqual(before);
   expect(await page.locator(".hero-switcher").innerText()).toEqual(heroes);
 });
+
+test("REIWA toy controls have separate touch areas on small screens", async ({
+  page,
+}) => {
+  await startBattle(page);
+  await page.locator('[data-appearance="neo"]').click();
+  for (const width of [320, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    const controls = await page
+      .locator(".neo-toy button")
+      .evaluateAll((elements) =>
+        elements.map((el) => {
+          const r = el.getBoundingClientRect();
+          return {
+            name: el.getAttribute("aria-label"),
+            x: r.x,
+            y: r.y,
+            right: r.right,
+            bottom: r.bottom,
+          };
+        }),
+      );
+    for (let i = 0; i < controls.length; i++)
+      for (let j = i + 1; j < controls.length; j++) {
+        const a = controls[i],
+          b = controls[j];
+        const overlaps =
+          a.x < b.right && a.right > b.x && a.y < b.bottom && a.bottom > b.y;
+        expect(overlaps, `${width}px: ${a.name} overlaps ${b.name}`).toBe(
+          false,
+        );
+      }
+  }
+});

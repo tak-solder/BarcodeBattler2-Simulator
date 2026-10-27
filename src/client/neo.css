@@ -258,353 +258,536 @@ body[data-ui="neo"] .toast {
   border-color: #386877;
   color: #d7f9f0;
 }
-.neo-device {
-  --neo-accent: #6af0d9;
-}
-.neo-surface {
+/* REIWA NEXT is a handheld toy concept: a frosted shell, one color display,
+   a thumb-operated action cluster, tactile function keys and an optical slot. */
+.neo-toy {
   position: relative;
-  background: linear-gradient(135deg, #142337, #0c1528 55%, #1d2040);
-  border: 1px solid #344964;
-  border-radius: 23px;
-  padding: 24px;
-  overflow: hidden;
-  box-shadow:
-    inset 0 1px 0 #c4e4ff13,
-    0 20px 60px #0004;
+  width: 100%;
+  aspect-ratio: 1000 / 690;
+  color: #214d49;
+  isolation: isolate;
+  filter: drop-shadow(0 18px 16px #0005);
 }
-.neo-surface::before {
+.neo-toy-skin {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.neo-toy-brand {
+  position: absolute;
+  left: 20%;
+  top: 9.2%;
+  color: #244d43;
+  line-height: 1;
+  transform: rotate(-1deg);
+}
+.neo-toy-brand > span {
+  font:
+    600 0.8cqw / 1 Arial,
+    sans-serif;
+  letter-spacing: 0.18em;
+  display: block;
+  margin-bottom: 0.2cqw;
+}
+.neo-toy-brand > strong {
+  font:
+    900 5.7cqw / 0.9 Arial,
+    sans-serif;
+  letter-spacing: -0.08em;
+}
+.neo-toy-brand > strong > span {
+  color: #f27f91;
+  font-size: 5.6cqw;
+  letter-spacing: -0.2em;
+}
+.neo-toy-edition {
+  position: absolute;
+  left: 72%;
+  top: 13.3%;
+  font:
+    800 1.55cqw / 1.2 Arial,
+    sans-serif;
+  letter-spacing: 0.1em;
+  transform: rotate(9deg);
+  color: #365f54;
+}
+.neo-toy-edition > b {
+  font:
+    500 0.58cqw / 1.7 ui-monospace,
+    monospace;
+  letter-spacing: 0.13em;
+}
+.neo-display-bezel {
+  position: absolute;
+  left: 19.25%;
+  top: 19.6%;
+  width: 46.6%;
+  height: 45.3%;
+  padding: 0.6cqw;
+  background: #06111c;
+  border-radius: 2.5cqw;
+  box-shadow:
+    inset 0 0.2cqw 0.6cqw #a2ded22e,
+    0 0.15cqw 0.2cqw #ffffff80;
+  overflow: hidden;
+}
+.neo-display {
+  height: 100%;
+  padding: 1.3cqw 1.6cqw 0.9cqw;
+  position: relative;
+  border-radius: 2.1cqw;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 0 0, #2a69523b, transparent 80%),
+    linear-gradient(120deg, #101f2c, #172139);
+  color: #b5d9d8;
+  box-shadow: inset 0 0.4cqw 1cqw #0009;
+}
+.neo-display::after {
   content: "";
   position: absolute;
-  pointer-events: none;
   inset: 0;
-  background-image:
-    linear-gradient(#5fa8b505 1px, transparent 1px),
-    linear-gradient(90deg, #5fa8b505 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-.neo-topline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  position: relative;
-}
-.neo-kicker {
-  font:
-    8px ui-monospace,
-    monospace;
-  letter-spacing: 2.2px;
-  color: #7592b4;
-}
-.neo-topline h2 {
-  color: #edf5ff;
-  font:
-    750 24px/1.3 Arial,
-    sans-serif;
-  letter-spacing: -0.04em;
-  margin-top: 7px;
-}
-.neo-topline h2 > span {
-  color: #6cebd5;
-  font-weight: 300;
-}
-.neo-version {
-  color: #75f5db;
-  font:
-    300 37px/0.9 Arial,
-    sans-serif;
-  text-align: right;
-  letter-spacing: -2px;
-}
-.neo-version > span {
-  display: block;
-  font:
-    6px ui-monospace,
-    monospace;
-  letter-spacing: 2px;
-  margin-top: 9px;
-  color: #7694b7;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    145deg,
+    #e7fcff0f,
+    transparent 35%,
+    transparent 70%,
+    #efffff09
+  );
 }
 .neo-match-state {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  color: #7893b3;
   font:
-    8px ui-monospace,
+    500 0.8cqw / 1.3 ui-monospace,
     monospace;
-  letter-spacing: 1px;
-  border-top: 1px solid #24374f;
-  border-bottom: 1px solid #24374f;
-  padding: 13px 0;
-  margin-top: 21px;
-  position: relative;
+  color: #9fb4ca;
+  letter-spacing: 0.06em;
+  padding-bottom: 0.75cqw;
+  border-bottom: 1px solid #5d879331;
 }
 .neo-match-state i {
   display: inline-block;
-  width: 5px;
-  height: 5px;
-  background: #77edcb;
+  width: 0.45cqw;
+  height: 0.45cqw;
   border-radius: 50%;
-  box-shadow: 0 0 9px #55f7c6aa;
-  margin-right: 6px;
+  background: #b5ed9c;
+  margin-right: 0.6cqw;
+  box-shadow: 0 0 1cqw #91fda3a1;
 }
 .neo-players {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  margin: 20px 0;
-  position: relative;
+  gap: 2cqw;
+  margin-top: 1cqw;
 }
 .neo-player {
-  position: relative;
-  background: linear-gradient(160deg, #153b423a, #102031);
-  border: 1px solid #2b4757;
-  border-radius: 12px;
-  padding: 15px;
   min-width: 0;
-  color: #6af0d9;
+  color: #8cebd0;
 }
 .neo-player.challenger {
-  color: #b39bff;
-  border-color: #3f365b;
-  background: linear-gradient(160deg, #41327530, #151e34);
-}
-.neo-player.is-active {
-  border-color: currentColor;
-  box-shadow: 0 0 23px #5edbcb0b;
+  color: #cbb1ff;
+  padding-left: 1.5cqw;
+  border-left: 1px solid #74869d30;
 }
 .neo-player-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
   font:
-    7px ui-monospace,
+    500 0.65cqw / 1.3 ui-monospace,
     monospace;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+.neo-player.is-active .neo-player-head {
+  opacity: 1;
 }
 .neo-player-head > span:last-child {
-  color: #7287a0;
-  font-size: 6px;
-  letter-spacing: 0.2px;
-}
-.neo-player.is-active .neo-player-head > span:last-child {
-  color: inherit;
+  font-size: 0.7cqw;
 }
 .neo-avatar {
   display: flex;
   align-items: center;
-  flex-direction: column;
-  position: relative;
-  padding: 8px 0 12px;
+  gap: 0.5cqw;
+  height: 8cqw;
 }
 .neo-emblem {
-  width: 140px;
-  height: 140px;
-  max-width: 100%;
-  filter: drop-shadow(0 0 15px #5cf3d019);
+  width: 7.4cqw;
+  height: 7.4cqw;
+  flex-shrink: 0;
 }
-.neo-avatar > span {
-  border: 1px solid currentColor;
-  border-radius: 3px;
-  padding: 4px 8px;
-  font-size: 8px;
-  margin-top: -6px;
-  background: #152b34;
+.neo-avatar > div {
+  min-width: 0;
 }
-.challenger .neo-avatar > span {
-  background: #27233d;
-}
-.neo-identity h3 {
-  font:
-    700 16px/1.3 Arial,
-    sans-serif;
-  letter-spacing: 1.5px;
-  color: #e0edf8;
-}
-.neo-identity > span {
-  color: #6f8aa6;
-  font:
-    7px ui-monospace,
-    monospace;
-  letter-spacing: 0.7px;
+.neo-avatar > div > span {
   display: block;
-  margin: 6px 0 16px;
+  font-size: 0.8cqw;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.neo-avatar strong {
+  display: block;
+  margin-top: 0.3cqw;
+  color: #dce7f1;
+  font:
+    700 0.95cqw / 1.4 Arial,
+    sans-serif;
+  letter-spacing: 0.01em;
 }
 .neo-health {
   display: flex;
-  align-items: baseline;
   justify-content: space-between;
+  align-items: baseline;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.5cqw;
 }
 .neo-health > span:first-child {
   font:
-    8px ui-monospace,
+    500 0.65cqw / 1.3 ui-monospace,
     monospace;
-  color: #7d99b5;
+  color: #7a9cae;
 }
 .neo-health b {
-  font:
-    500 31px/1 Arial,
-    sans-serif;
-  color: #dff8f4;
-  letter-spacing: -1px;
   display: block;
-  margin-top: 5px;
+  font:
+    500 3.5cqw / 1 Arial,
+    sans-serif;
+  color: #e1f8ef;
+  letter-spacing: -0.06em;
   font-variant-numeric: tabular-nums;
+  margin-top: 0.15cqw;
 }
 .challenger .neo-health b {
-  color: #ede8ff;
+  color: #ede1ff;
 }
 .neo-health > span:nth-child(2) {
   font:
-    9px ui-monospace,
+    500 0.8cqw / 1.3 ui-monospace,
     monospace;
 }
 .neo-health-track {
   width: 100%;
-  height: 4px;
-  background: #243a4b;
-  border-radius: 5px;
+  height: 0.43cqw;
+  border-radius: 1cqw;
   overflow: hidden;
-  margin-top: 2px;
+  background: #53707844;
+  margin-top: 0.4cqw;
 }
 .neo-health-track > i {
   display: block;
   height: 100%;
+  border-radius: inherit;
   background: currentColor;
-  box-shadow: 0 0 8px currentColor;
   transition: width 0.25s;
 }
 .neo-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 4px;
-  margin: 15px 0;
+  gap: 0.5cqw;
+  margin-top: 1.4cqw;
 }
 .neo-metrics span {
   display: block;
-  color: #7390ad;
   font:
-    7px ui-monospace,
+    500 0.6cqw / 1.3 ui-monospace,
     monospace;
+  color: #87a0b2;
 }
 .neo-metrics strong {
   display: block;
-  color: #d3e0f1;
+  margin-top: 0.5cqw;
+  color: #d3dfec;
   font:
-    500 14px/1.4 Arial,
+    500 1.5cqw / 1.3 Arial,
     sans-serif;
-  margin-top: 5px;
   font-variant-numeric: tabular-nums;
 }
-.neo-player-actions {
-  display: flex;
-  gap: 7px;
-}
-.neo-player-actions > button {
-  border-radius: 5px;
-  border: 1px solid #4fc5b77a;
-  color: #aaf8e6;
-  background: #20504f;
-  min-height: 40px;
-  padding: 8px 6px;
-  font:
-    700 8px Arial,
-    sans-serif;
-  letter-spacing: 0.5px;
+.neo-display-footer {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
-  flex: 1;
+  justify-content: space-between;
+  margin-top: 1.8cqw;
+  color: #61818f;
+  font:
+    500 0.55cqw / 1.4 ui-monospace,
+    monospace;
+  letter-spacing: 0.08em;
 }
-.neo-player-actions > button > span {
-  font-size: 13px;
+.neo-display-footer > span:last-child {
+  letter-spacing: 0.5cqw;
+  color: #88cab5;
+  font-size: 0.6cqw;
 }
-.neo-player-actions > .neo-power {
-  background: #17303c;
-  border-color: #2a5360;
-  color: #9cbecb;
-}
-.challenger .neo-player-actions > button {
-  background: #3a315c;
-  color: #dfceff;
-  border-color: #6d589f;
-}
-.challenger .neo-player-actions > .neo-power {
-  background: #25263f;
-  border-color: #4a4163;
-  color: #b4a9cf;
-}
-.neo-player-actions > button:hover:not(:disabled) {
-  filter: brightness(1.3);
-}
-.neo-player-actions > button:disabled {
-  opacity: 0.38;
-}
-.neo-vs {
-  width: 34px;
-  height: 34px;
-  border: 1px solid #3c5371;
-  background: #142338;
-  border-radius: 50%;
+.neo-display-off {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, #15242c, #0d1623);
   display: grid;
   place-items: center;
+  color: #55747c;
   font:
-    italic 700 10px Arial,
-    sans-serif;
-  color: #8098b7;
+    500 1.8cqw / 1 ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+}
+.neo-off .neo-players,
+.neo-off .neo-match-state,
+.neo-off .neo-display-footer {
+  visibility: hidden;
+}
+.neo-thumb-label {
   position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 6px #0e192b;
-}
-.neo-command-bar {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding-top: 17px;
-  border-top: 1px solid #273750;
-  position: relative;
-}
-.neo-command-bar > button {
-  min-height: 47px;
-  border: 1px solid #30415c;
-  border-radius: 7px;
-  background: #1b2a40;
-  color: #8eabc7;
-  font-size: 17px;
+  left: 76%;
+  top: 26.6%;
+  font:
+    700 0.8cqw / 1.3 Arial,
+    sans-serif;
+  letter-spacing: 0.12em;
+  color: #746a86;
   display: flex;
+  gap: 0.6cqw;
+  align-items: center;
+  transform: rotate(8deg);
+}
+.neo-thumb-label > i {
+  width: 0.6cqw;
+  height: 0.6cqw;
+  border-radius: 100%;
+  background: #96a29b;
+  box-shadow: 0 0 0 0.3cqw #adb3b1;
+}
+.neo-thumb-label > i.on {
+  background: #c4ffa1;
+  box-shadow:
+    0 0 0.6cqw #c4ffa1,
+    0 0 0 0.3cqw #99a18d;
+}
+.neo-toy-action {
+  position: absolute;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #294847;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+}
+.toy-battle {
+  left: 77%;
+  top: 34%;
+  width: 13.8%;
+}
+.toy-power {
+  left: 70%;
+  top: 53%;
+  width: 9.7%;
+  color: #6b546a;
+}
+.toy-button-face {
+  position: absolute;
+  inset: 5%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 24%,
+    #f4ffd6,
+    #d5fca4 57%,
+    #a9d472 83%,
+    #ebffbf
+  );
+  border: 0.25cqw solid #9cbe7b;
+  box-shadow:
+    0 0.65cqw 0.1cqw #697665,
+    0 0.8cqw 0.35cqw #222f3b80,
+    0 0 0 0.9cqw #a3a4b42e,
+    inset 0.1cqw 0.25cqw 0.5cqw #fff9;
+  transform: rotate(8deg);
 }
-.neo-command-bar > button > span {
+.toy-power .toy-button-face {
+  background: radial-gradient(
+    circle at 38% 24%,
+    #ffe4e6,
+    #f2b5c4 57%,
+    #d68ca4 83%,
+    #ffd1df
+  );
+  border-color: #c78fa8;
+  box-shadow:
+    0 0.5cqw 0.1cqw #9c758f,
+    0 0.7cqw 0.35cqw #222f3b80,
+    0 0 0 0.7cqw #b4a3b52e,
+    inset 0.1cqw 0.25cqw 0.5cqw #fff9;
+  transform: rotate(-12deg);
+}
+.toy-button-face > i {
   font:
-    7px ui-monospace,
-    monospace;
-  letter-spacing: 0.5px;
+    500 3.9cqw / 1 Arial,
+    sans-serif;
+  font-style: normal;
 }
-.neo-command-bar > button:last-child {
-  color: #6ae2d5;
-  border-color: #37666c;
-  background: #1b3741;
+.toy-button-face > b {
+  font:
+    800 1cqw / 1.6 Arial,
+    sans-serif;
+  letter-spacing: 0.08em;
 }
-.neo-command-bar > button:hover:not(:disabled) {
-  background: #2a3e55;
+.toy-power .toy-button-face > i {
+  font-size: 3cqw;
 }
-.neo-bottomline {
+.toy-power .toy-button-face > b {
+  font-size: 0.8cqw;
+}
+.neo-toy-action:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+.neo-toy-action:disabled .toy-button-face {
+  filter: saturate(0.65) brightness(0.87);
+}
+.neo-toy-action:not(:disabled):hover .toy-button-face {
+  filter: brightness(1.07);
+}
+.neo-toy-action:not(:disabled):active .toy-button-face {
+  translate: 0 0.45cqw;
+  box-shadow:
+    0 0.2cqw 0.1cqw #697665,
+    0 0.3cqw 0.3cqw #222f3b80,
+    inset 0.1cqw 0.25cqw 0.5cqw #fff9;
+}
+.neo-toy-action:focus-visible {
+  outline: 2px solid #f4ffd5;
+  outline-offset: 0.8cqw;
+}
+.neo-physical-keys {
+  position: absolute;
+  left: 22%;
+  top: 68.9%;
+  width: 38%;
+  height: 12%;
   display: flex;
   justify-content: space-between;
-  color: #49617f;
+  gap: 2cqw;
+}
+.neo-physical-keys > button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1cqw;
+  width: 27%;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #3c6663;
+}
+.neo-function-face {
+  width: 90%;
+  height: 3cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 2cqw;
   font:
-    6px ui-monospace,
+    700 2cqw / 1 Arial,
+    sans-serif;
+  color: #3b6062;
+  background: linear-gradient(#fbfffc, #e1efef 50%, #bed3d5);
+  border: 0.13cqw solid #b9cfd0;
+  box-shadow:
+    0 0.5cqw 0 #9bb9b6,
+    0 0.6cqw 0.4cqw #284e4a55,
+    inset 0 0.15cqw 0.2cqw #fff,
+    0 0 0 0.4cqw #759c9224;
+}
+.neo-physical-keys > button small {
+  font:
+    700 0.65cqw / 1 Arial,
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.neo-physical-keys > button:not(:disabled):active .neo-function-face {
+  translate: 0 0.3cqw;
+  box-shadow: 0 0.2cqw 0 #9bb9b6;
+}
+.neo-physical-keys > button:disabled {
+  opacity: 0.5;
+}
+.neo-physical-keys > button:focus-visible {
+  outline: 2px solid #2f7569;
+  outline-offset: 0.4cqw;
+  border-radius: 1.2cqw;
+}
+.neo-optical-reader {
+  position: absolute;
+  left: 24.4%;
+  top: 80.2%;
+  width: 42.1%;
+  height: 13%;
+  border: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.8cqw 0.7cqw;
+  color: #406b60;
+}
+.neo-optical-reader > span {
+  font:
+    700 0.85cqw / 1.4 Arial,
+    sans-serif;
+  letter-spacing: 0.2em;
+}
+.neo-optical-reader > i {
+  display: block;
+  width: 91%;
+  height: 2.6cqw;
+  border-radius: 1.7cqw;
+  box-shadow: 0 0 1.6cqw #e0ff8c44;
+}
+.neo-optical-reader > small {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  font:
+    700 0.6cqw / 1 Arial,
+    sans-serif;
+  letter-spacing: 0.14em;
+}
+.neo-optical-reader b {
+  font-size: 1.3cqw;
+}
+.neo-optical-reader:hover > i {
+  background: #d7ff8a22;
+  box-shadow: 0 0 2cqw #e0ff8c88;
+}
+.neo-optical-reader:focus-visible {
+  outline: 2px solid #244a44;
+  outline-offset: 0.5cqw;
+  border-radius: 1.5cqw;
+}
+.neo-case-detail {
+  position: absolute;
+  left: 71%;
+  top: 76%;
+  color: #49776a;
+  font:
+    500 0.65cqw / 1.8 ui-monospace,
     monospace;
-  letter-spacing: 1.2px;
-  margin-top: 18px;
+  letter-spacing: 0.1em;
+  transform: rotate(-8deg);
 }
 .neo-device .device-hud p {
   color: #849db9;
@@ -612,51 +795,14 @@ body[data-ui="neo"] .toast {
 .neo-device .device-hud .text-button {
   color: #91b5d0;
 }
-.neo-off .neo-players {
-  visibility: hidden;
-}
-.neo-display-off {
-  position: absolute;
-  top: 40%;
-  left: 10%;
-  right: 10%;
-  text-align: center;
-  color: #91acca;
-}
-.neo-display-off > span {
-  font:
-    18px ui-monospace,
-    monospace;
-  letter-spacing: 4px;
-}
-.neo-display-off > p {
-  font-size: 11px;
-  color: #627f9e;
-  margin-top: 14px;
-}
-@media (max-width: 1060px) and (min-width: 781px) {
-  .neo-surface {
-    padding: 19px;
-  }
-  .neo-players {
-    gap: 14px;
-  }
-  .neo-player {
-    padding: 12px;
-  }
-  .neo-player-head {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .neo-command-bar > button {
-    flex-direction: column;
-    gap: 3px;
-  }
-  .neo-topline h2 {
-    font-size: 21px;
-  }
-}
 @media (max-width: 780px) {
+  .toy-battle {
+    top: 32%;
+  }
+  .toy-power {
+    top: 55%;
+  }
+
   .design-switcher {
     gap: 10px;
     flex-wrap: wrap;
@@ -679,59 +825,46 @@ body[data-ui="neo"] .toast {
   .design-note {
     display: none;
   }
-  .neo-surface {
-    padding: 19px 16px;
+  .neo-physical-keys {
+    top: 65.5%;
+    height: 15.2%;
   }
-  .neo-topline h2 {
-    font-size: 23px;
+  .neo-physical-keys > button {
+    min-width: 40px;
+    min-height: 0;
+    gap: 1.7cqw;
   }
-  .neo-players {
-    gap: 16px;
+  .neo-function-face {
+    font-size: 2.7cqw;
+    height: 3.9cqw;
   }
-  .neo-player {
-    padding: 12px 10px;
+  .neo-physical-keys > button small {
+    font-size: max(5px, 0.65cqw);
   }
-  .neo-player-head {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 5px;
+  .neo-optical-reader {
+    top: 81.5%;
+    height: 14.5%;
+    justify-content: center;
+    gap: 1.8cqw;
   }
-  .neo-identity h3 {
-    font-size: 13px;
-    letter-spacing: 1px;
+  .neo-display {
+    padding: 1.5cqw 1.6cqw 1cqw;
+  }
+  .neo-display-bezel {
+    height: 45.3%;
+  }
+  .neo-avatar {
+    height: 7.1cqw;
   }
   .neo-emblem {
-    width: 120px;
-    height: 120px;
-  }
-  .neo-metrics strong {
-    font-size: 12px;
+    width: 6.4cqw;
+    height: 6.4cqw;
   }
   .neo-health b {
-    font-size: 26px;
+    font-size: 3.8cqw;
   }
-  .neo-player-actions {
-    gap: 5px;
-    flex-direction: column;
-  }
-  .neo-player-actions > button {
-    min-height: 40px;
-    font-size: 9px;
-  }
-  .neo-command-bar {
-    gap: 6px;
-  }
-  .neo-command-bar > button {
-    flex-direction: column;
-    gap: 4px;
-    min-height: 50px;
-  }
-  .neo-command-bar > button > span {
-    font-size: 6px;
-  }
-  .neo-bottomline {
-    font-size: 5px;
-    letter-spacing: 0.7px;
+  .neo-metrics strong {
+    font-size: 1.8cqw;
   }
 }
 @media (prefers-reduced-motion: reduce) {
