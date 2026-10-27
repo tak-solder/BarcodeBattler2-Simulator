@@ -10,14 +10,19 @@
     "dev": "wrangler dev",
     "build": "vite build",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json",
-    "test": "node --import tsx tests/engine.test.ts",
+    "test": "node --import tsx tests/engine.test.ts && node tests/preview.test.mjs",
     "check": "npm run typecheck && npm test && npm run build && wrangler deploy --dry-run",
     "db:local": "wrangler d1 migrations apply DB --local",
     "db:remote": "wrangler d1 migrations apply DB --remote",
     "deploy": "npm run build && wrangler deploy",
     "port": "node scripts/port-engine.mjs",
     "test:e2e": "playwright test",
-    "predeploy": "node scripts/check-deploy.mjs"
+    "predeploy": "node scripts/check-deploy.mjs",
+    "preview": "npm run build && node scripts/preview.mjs deploy",
+    "preview:deploy": "node scripts/preview.mjs deploy",
+    "preview:check": "node scripts/preview.mjs check",
+    "preview:dry-run": "npm run build && node scripts/preview.mjs dry-run",
+    "db:preview": "node scripts/preview.mjs migrate"
   },
   "dependencies": {
     "@zxing/browser": "0.2.1",
