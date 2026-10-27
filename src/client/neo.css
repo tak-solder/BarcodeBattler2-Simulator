@@ -1,0 +1,741 @@
+/* A second presentation of the same game state and commands. */
+.design-switcher {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+.design-switcher > span {
+  font:
+    600 9px ui-monospace,
+    monospace;
+  letter-spacing: 1.6px;
+  color: #89927f;
+}
+.design-options {
+  display: inline-flex;
+  border: 1px solid #d4d9cf;
+  padding: 3px;
+  border-radius: 30px;
+  gap: 3px;
+}
+.design-options button {
+  border: none;
+  background: transparent;
+  color: #87917d;
+  border-radius: 24px;
+  padding: 8px 17px;
+  min-height: 36px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.design-options button small {
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 0.6px;
+  opacity: 0.7;
+}
+.design-options button[aria-pressed="true"] {
+  background: #292e39;
+  color: #faf9ef;
+  box-shadow: 0 2px 5px #17201c1a;
+}
+.design-note {
+  font-size: 10px;
+  color: #9ca591;
+  margin-left: auto;
+}
+body[data-ui="neo"] {
+  background: #080e1b;
+  color: #dce7fb;
+  --ink: #102333;
+  --line: #23304a;
+  --orange: #65ead3;
+  --muted: #7c8da8;
+  color-scheme: dark;
+  background-image:
+    radial-gradient(ellipse at 10% 15%, #2047562b, transparent 38%),
+    radial-gradient(ellipse at 90% 25%, #43367d26, transparent 35%);
+}
+body[data-ui="neo"] .brand,
+body[data-ui="neo"] .intro h1 {
+  color: #e7efff;
+}
+body[data-ui="neo"] .brand b,
+body[data-ui="neo"] .intro h1 em {
+  color: #6df2d8;
+}
+body[data-ui="neo"] .brand small,
+body[data-ui="neo"] .eyebrow {
+  color: #7492b2;
+}
+body[data-ui="neo"] .player-button,
+body[data-ui="neo"] .help-button,
+body[data-ui="neo"] .tag {
+  border-color: #31415b;
+  color: #9badc6;
+}
+body[data-ui="neo"] .mode-tabs button {
+  color: #7589a8;
+}
+body[data-ui="neo"] .mode-tabs button.active {
+  color: #7aeedc;
+}
+body[data-ui="neo"] .mode-tabs button.active:after {
+  background: #6af0db;
+}
+body[data-ui="neo"] .design-switcher > span {
+  color: #7489a6;
+}
+body[data-ui="neo"] .design-options {
+  border-color: #2c3d58;
+  background: #101a2c;
+}
+body[data-ui="neo"] .design-options button {
+  color: #8199ba;
+}
+body[data-ui="neo"] .design-options button[aria-pressed="true"] {
+  background: #22354d;
+  color: #80f2db;
+  box-shadow: inset 0 0 0 1px #50e4d632;
+}
+body[data-ui="neo"] .design-note {
+  color: #627797;
+}
+body[data-ui="neo"] .intro p,
+body[data-ui="neo"] .muted,
+body[data-ui="neo"] .panel-heading p,
+body[data-ui="neo"] .scan-note > span {
+  color: #8494ad;
+}
+body[data-ui="neo"] .panel {
+  background: linear-gradient(140deg, #111c30, #10192a);
+  border-color: #28374f;
+  box-shadow: 0 15px 40px #02060f20;
+  border-radius: 15px;
+}
+body[data-ui="neo"] .panel h2,
+body[data-ui="neo"] .panel h3 {
+  color: #e5edfc;
+}
+body[data-ui="neo"] .room-card {
+  background: #0d1627;
+  border-color: #28384f;
+  color: #d1dff6;
+}
+body[data-ui="neo"] .room-card.selected {
+  background: #13313c;
+  border-color: #4ba69d;
+}
+body[data-ui="neo"] .room-card:hover {
+  background: #182c3f;
+}
+body[data-ui="neo"] .room-icon {
+  background: #1e3c48;
+  color: #77c9bc;
+}
+body[data-ui="neo"] .room-card:not(.selected) .room-icon {
+  background: #242b49;
+  color: #a89ace;
+}
+body[data-ui="neo"] .regulation,
+body[data-ui="neo"] .step-number,
+body[data-ui="neo"] .champion-avatar,
+body[data-ui="neo"] .match-icon {
+  background: #19263a;
+  color: #8fa9c7;
+}
+body[data-ui="neo"] .radio-dot {
+  border-color: #59748f;
+}
+body[data-ui="neo"] .room-card.selected .radio-dot:after {
+  background: #73e7d0;
+}
+body[data-ui="neo"] input,
+body[data-ui="neo"] select {
+  color: #d7e5fa;
+  border-color: #2c3e57;
+  background: #0c1627;
+}
+body[data-ui="neo"] input::placeholder {
+  color: #546c8a;
+}
+body[data-ui="neo"] input:focus,
+body[data-ui="neo"] select:focus {
+  border-color: #68cebf;
+  box-shadow: 0 0 0 3px #66dfc915;
+}
+body[data-ui="neo"] .field label {
+  color: #9cb1c9;
+}
+body[data-ui="neo"] .field label span {
+  background: #253047;
+  color: #98adc5;
+}
+body[data-ui="neo"] .button.primary,
+body[data-ui="neo"] .camera-button {
+  background: linear-gradient(110deg, #75f0d6, #7ed4eb);
+  color: #09222b;
+  border-color: #73e8d3;
+  box-shadow: 0 5px 18px #4acdb114;
+}
+body[data-ui="neo"] .primary:hover:not(:disabled),
+body[data-ui="neo"] .camera-button:hover {
+  background: #a1ffe8;
+}
+body[data-ui="neo"] .secondary {
+  color: #adc4dd;
+  border-color: #33455f;
+  background: #1a2a40;
+}
+body[data-ui="neo"] .or-line:before {
+  background: #293b54;
+}
+body[data-ui="neo"] .or-line span {
+  background: #101b2e;
+  color: #6b83a2;
+}
+body[data-ui="neo"] .text-button {
+  color: #8ba9c8;
+}
+body[data-ui="neo"] .result-banner,
+body[data-ui="neo"] .password-result {
+  background: #163b3d;
+  border-color: #2a7770;
+  color: #aff5df;
+}
+body[data-ui="neo"] .result-stats,
+body[data-ui="neo"] .log-row,
+body[data-ui="neo"] .match-list button,
+body[data-ui="neo"] .campaign-footer {
+  border-color: #2a3a53;
+}
+body[data-ui="neo"] .magic-grid button,
+body[data-ui="neo"] .world-map button,
+body[data-ui="neo"] .hero-chip {
+  background: #142237;
+  color: #b5c9df;
+  border-color: #2f435d;
+}
+body[data-ui="neo"] .world-map .selected,
+body[data-ui="neo"] .hero-chip.active {
+  background: #1c3a43;
+  border-color: #438b87;
+}
+body[data-ui="neo"] .catalog-grid > button {
+  background: #152338;
+  border-color: #2c415d;
+  color: #d6e2f8;
+}
+body[data-ui="neo"] .catalog-code-mark {
+  background: #1f3446;
+  color: #80aeb4;
+}
+body[data-ui="neo"] .device-caption {
+  color: #7186a5;
+}
+body[data-ui="neo"] .bottom-strip,
+body[data-ui="neo"] footer {
+  border-color: #26344b;
+}
+body[data-ui="neo"] .bottom-strip span strong {
+  color: #8cc4c5;
+}
+body[data-ui="neo"] dialog {
+  background: #111e33;
+  border-color: #34465f;
+  color: #d7e5fc;
+}
+body[data-ui="neo"] .help-content p {
+  color: #9db0ca;
+}
+body[data-ui="neo"] .toast {
+  background: #1a3a48;
+  border-color: #386877;
+  color: #d7f9f0;
+}
+.neo-device {
+  --neo-accent: #6af0d9;
+}
+.neo-surface {
+  position: relative;
+  background: linear-gradient(135deg, #142337, #0c1528 55%, #1d2040);
+  border: 1px solid #344964;
+  border-radius: 23px;
+  padding: 24px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 #c4e4ff13,
+    0 20px 60px #0004;
+}
+.neo-surface::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+  background-image:
+    linear-gradient(#5fa8b505 1px, transparent 1px),
+    linear-gradient(90deg, #5fa8b505 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.neo-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  position: relative;
+}
+.neo-kicker {
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 2.2px;
+  color: #7592b4;
+}
+.neo-topline h2 {
+  color: #edf5ff;
+  font:
+    750 24px/1.3 Arial,
+    sans-serif;
+  letter-spacing: -0.04em;
+  margin-top: 7px;
+}
+.neo-topline h2 > span {
+  color: #6cebd5;
+  font-weight: 300;
+}
+.neo-version {
+  color: #75f5db;
+  font:
+    300 37px/0.9 Arial,
+    sans-serif;
+  text-align: right;
+  letter-spacing: -2px;
+}
+.neo-version > span {
+  display: block;
+  font:
+    6px ui-monospace,
+    monospace;
+  letter-spacing: 2px;
+  margin-top: 9px;
+  color: #7694b7;
+}
+.neo-match-state {
+  display: flex;
+  justify-content: space-between;
+  color: #7893b3;
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 1px;
+  border-top: 1px solid #24374f;
+  border-bottom: 1px solid #24374f;
+  padding: 13px 0;
+  margin-top: 21px;
+  position: relative;
+}
+.neo-match-state i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #77edcb;
+  border-radius: 50%;
+  box-shadow: 0 0 9px #55f7c6aa;
+  margin-right: 6px;
+}
+.neo-players {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin: 20px 0;
+  position: relative;
+}
+.neo-player {
+  position: relative;
+  background: linear-gradient(160deg, #153b423a, #102031);
+  border: 1px solid #2b4757;
+  border-radius: 12px;
+  padding: 15px;
+  min-width: 0;
+  color: #6af0d9;
+}
+.neo-player.challenger {
+  color: #b39bff;
+  border-color: #3f365b;
+  background: linear-gradient(160deg, #41327530, #151e34);
+}
+.neo-player.is-active {
+  border-color: currentColor;
+  box-shadow: 0 0 23px #5edbcb0b;
+}
+.neo-player-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 0.8px;
+}
+.neo-player-head > span:last-child {
+  color: #7287a0;
+  font-size: 6px;
+  letter-spacing: 0.2px;
+}
+.neo-player.is-active .neo-player-head > span:last-child {
+  color: inherit;
+}
+.neo-avatar {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+  padding: 8px 0 12px;
+}
+.neo-emblem {
+  width: 140px;
+  height: 140px;
+  max-width: 100%;
+  filter: drop-shadow(0 0 15px #5cf3d019);
+}
+.neo-avatar > span {
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 8px;
+  margin-top: -6px;
+  background: #152b34;
+}
+.challenger .neo-avatar > span {
+  background: #27233d;
+}
+.neo-identity h3 {
+  font:
+    700 16px/1.3 Arial,
+    sans-serif;
+  letter-spacing: 1.5px;
+  color: #e0edf8;
+}
+.neo-identity > span {
+  color: #6f8aa6;
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 0.7px;
+  display: block;
+  margin: 6px 0 16px;
+}
+.neo-health {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.neo-health > span:first-child {
+  font:
+    8px ui-monospace,
+    monospace;
+  color: #7d99b5;
+}
+.neo-health b {
+  font:
+    500 31px/1 Arial,
+    sans-serif;
+  color: #dff8f4;
+  letter-spacing: -1px;
+  display: block;
+  margin-top: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.challenger .neo-health b {
+  color: #ede8ff;
+}
+.neo-health > span:nth-child(2) {
+  font:
+    9px ui-monospace,
+    monospace;
+}
+.neo-health-track {
+  width: 100%;
+  height: 4px;
+  background: #243a4b;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 2px;
+}
+.neo-health-track > i {
+  display: block;
+  height: 100%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  transition: width 0.25s;
+}
+.neo-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px;
+  margin: 15px 0;
+}
+.neo-metrics span {
+  display: block;
+  color: #7390ad;
+  font:
+    7px ui-monospace,
+    monospace;
+}
+.neo-metrics strong {
+  display: block;
+  color: #d3e0f1;
+  font:
+    500 14px/1.4 Arial,
+    sans-serif;
+  margin-top: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.neo-player-actions {
+  display: flex;
+  gap: 7px;
+}
+.neo-player-actions > button {
+  border-radius: 5px;
+  border: 1px solid #4fc5b77a;
+  color: #aaf8e6;
+  background: #20504f;
+  min-height: 40px;
+  padding: 8px 6px;
+  font:
+    700 8px Arial,
+    sans-serif;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex: 1;
+}
+.neo-player-actions > button > span {
+  font-size: 13px;
+}
+.neo-player-actions > .neo-power {
+  background: #17303c;
+  border-color: #2a5360;
+  color: #9cbecb;
+}
+.challenger .neo-player-actions > button {
+  background: #3a315c;
+  color: #dfceff;
+  border-color: #6d589f;
+}
+.challenger .neo-player-actions > .neo-power {
+  background: #25263f;
+  border-color: #4a4163;
+  color: #b4a9cf;
+}
+.neo-player-actions > button:hover:not(:disabled) {
+  filter: brightness(1.3);
+}
+.neo-player-actions > button:disabled {
+  opacity: 0.38;
+}
+.neo-vs {
+  width: 34px;
+  height: 34px;
+  border: 1px solid #3c5371;
+  background: #142338;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font:
+    italic 700 10px Arial,
+    sans-serif;
+  color: #8098b7;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 6px #0e192b;
+}
+.neo-command-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  padding-top: 17px;
+  border-top: 1px solid #273750;
+  position: relative;
+}
+.neo-command-bar > button {
+  min-height: 47px;
+  border: 1px solid #30415c;
+  border-radius: 7px;
+  background: #1b2a40;
+  color: #8eabc7;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.neo-command-bar > button > span {
+  font:
+    7px ui-monospace,
+    monospace;
+  letter-spacing: 0.5px;
+}
+.neo-command-bar > button:last-child {
+  color: #6ae2d5;
+  border-color: #37666c;
+  background: #1b3741;
+}
+.neo-command-bar > button:hover:not(:disabled) {
+  background: #2a3e55;
+}
+.neo-bottomline {
+  display: flex;
+  justify-content: space-between;
+  color: #49617f;
+  font:
+    6px ui-monospace,
+    monospace;
+  letter-spacing: 1.2px;
+  margin-top: 18px;
+}
+.neo-device .device-hud p {
+  color: #849db9;
+}
+.neo-device .device-hud .text-button {
+  color: #91b5d0;
+}
+.neo-off .neo-players {
+  visibility: hidden;
+}
+.neo-display-off {
+  position: absolute;
+  top: 40%;
+  left: 10%;
+  right: 10%;
+  text-align: center;
+  color: #91acca;
+}
+.neo-display-off > span {
+  font:
+    18px ui-monospace,
+    monospace;
+  letter-spacing: 4px;
+}
+.neo-display-off > p {
+  font-size: 11px;
+  color: #627f9e;
+  margin-top: 14px;
+}
+@media (max-width: 1060px) and (min-width: 781px) {
+  .neo-surface {
+    padding: 19px;
+  }
+  .neo-players {
+    gap: 14px;
+  }
+  .neo-player {
+    padding: 12px;
+  }
+  .neo-player-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .neo-command-bar > button {
+    flex-direction: column;
+    gap: 3px;
+  }
+  .neo-topline h2 {
+    font-size: 21px;
+  }
+}
+@media (max-width: 780px) {
+  .design-switcher {
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 12px 0;
+  }
+  .design-switcher > span {
+    font-size: 8px;
+  }
+  .design-options {
+    margin-left: auto;
+  }
+  .design-options button {
+    padding: 8px 11px;
+    font-size: 9px;
+    gap: 6px;
+  }
+  .design-options button small {
+    font-size: 7px;
+  }
+  .design-note {
+    display: none;
+  }
+  .neo-surface {
+    padding: 19px 16px;
+  }
+  .neo-topline h2 {
+    font-size: 23px;
+  }
+  .neo-players {
+    gap: 16px;
+  }
+  .neo-player {
+    padding: 12px 10px;
+  }
+  .neo-player-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  .neo-identity h3 {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .neo-emblem {
+    width: 120px;
+    height: 120px;
+  }
+  .neo-metrics strong {
+    font-size: 12px;
+  }
+  .neo-health b {
+    font-size: 26px;
+  }
+  .neo-player-actions {
+    gap: 5px;
+    flex-direction: column;
+  }
+  .neo-player-actions > button {
+    min-height: 40px;
+    font-size: 9px;
+  }
+  .neo-command-bar {
+    gap: 6px;
+  }
+  .neo-command-bar > button {
+    flex-direction: column;
+    gap: 4px;
+    min-height: 50px;
+  }
+  .neo-command-bar > button > span {
+    font-size: 6px;
+  }
+  .neo-bottomline {
+    font-size: 5px;
+    letter-spacing: 0.7px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neo-health-track > i {
+    transition: none;
+  }
+}
