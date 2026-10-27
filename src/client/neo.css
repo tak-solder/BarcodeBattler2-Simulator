@@ -1,0 +1,874 @@
+/* A second presentation of the same game state and commands. */
+.design-switcher {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+}
+.design-switcher > span {
+  font:
+    600 9px ui-monospace,
+    monospace;
+  letter-spacing: 1.6px;
+  color: #89927f;
+}
+.design-options {
+  display: inline-flex;
+  border: 1px solid #d4d9cf;
+  padding: 3px;
+  border-radius: 30px;
+  gap: 3px;
+}
+.design-options button {
+  border: none;
+  background: transparent;
+  color: #87917d;
+  border-radius: 24px;
+  padding: 8px 17px;
+  min-height: 36px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.design-options button small {
+  font:
+    8px ui-monospace,
+    monospace;
+  letter-spacing: 0.6px;
+  opacity: 0.7;
+}
+.design-options button[aria-pressed="true"] {
+  background: #292e39;
+  color: #faf9ef;
+  box-shadow: 0 2px 5px #17201c1a;
+}
+.design-note {
+  font-size: 10px;
+  color: #9ca591;
+  margin-left: auto;
+}
+body[data-ui="neo"] {
+  background: #080e1b;
+  color: #dce7fb;
+  --ink: #102333;
+  --line: #23304a;
+  --orange: #65ead3;
+  --muted: #7c8da8;
+  color-scheme: dark;
+  background-image:
+    radial-gradient(ellipse at 10% 15%, #2047562b, transparent 38%),
+    radial-gradient(ellipse at 90% 25%, #43367d26, transparent 35%);
+}
+body[data-ui="neo"] .brand,
+body[data-ui="neo"] .intro h1 {
+  color: #e7efff;
+}
+body[data-ui="neo"] .brand b,
+body[data-ui="neo"] .intro h1 em {
+  color: #6df2d8;
+}
+body[data-ui="neo"] .brand small,
+body[data-ui="neo"] .eyebrow {
+  color: #7492b2;
+}
+body[data-ui="neo"] .player-button,
+body[data-ui="neo"] .help-button,
+body[data-ui="neo"] .tag {
+  border-color: #31415b;
+  color: #9badc6;
+}
+body[data-ui="neo"] .mode-tabs button {
+  color: #7589a8;
+}
+body[data-ui="neo"] .mode-tabs button.active {
+  color: #7aeedc;
+}
+body[data-ui="neo"] .mode-tabs button.active:after {
+  background: #6af0db;
+}
+body[data-ui="neo"] .design-switcher > span {
+  color: #7489a6;
+}
+body[data-ui="neo"] .design-options {
+  border-color: #2c3d58;
+  background: #101a2c;
+}
+body[data-ui="neo"] .design-options button {
+  color: #8199ba;
+}
+body[data-ui="neo"] .design-options button[aria-pressed="true"] {
+  background: #22354d;
+  color: #80f2db;
+  box-shadow: inset 0 0 0 1px #50e4d632;
+}
+body[data-ui="neo"] .design-note {
+  color: #627797;
+}
+body[data-ui="neo"] .intro p,
+body[data-ui="neo"] .muted,
+body[data-ui="neo"] .panel-heading p,
+body[data-ui="neo"] .scan-note > span {
+  color: #8494ad;
+}
+body[data-ui="neo"] .panel {
+  background: linear-gradient(140deg, #111c30, #10192a);
+  border-color: #28374f;
+  box-shadow: 0 15px 40px #02060f20;
+  border-radius: 15px;
+}
+body[data-ui="neo"] .panel h2,
+body[data-ui="neo"] .panel h3 {
+  color: #e5edfc;
+}
+body[data-ui="neo"] .room-card {
+  background: #0d1627;
+  border-color: #28384f;
+  color: #d1dff6;
+}
+body[data-ui="neo"] .room-card.selected {
+  background: #13313c;
+  border-color: #4ba69d;
+}
+body[data-ui="neo"] .room-card:hover {
+  background: #182c3f;
+}
+body[data-ui="neo"] .room-icon {
+  background: #1e3c48;
+  color: #77c9bc;
+}
+body[data-ui="neo"] .room-card:not(.selected) .room-icon {
+  background: #242b49;
+  color: #a89ace;
+}
+body[data-ui="neo"] .regulation,
+body[data-ui="neo"] .step-number,
+body[data-ui="neo"] .champion-avatar,
+body[data-ui="neo"] .match-icon {
+  background: #19263a;
+  color: #8fa9c7;
+}
+body[data-ui="neo"] .radio-dot {
+  border-color: #59748f;
+}
+body[data-ui="neo"] .room-card.selected .radio-dot:after {
+  background: #73e7d0;
+}
+body[data-ui="neo"] input,
+body[data-ui="neo"] select {
+  color: #d7e5fa;
+  border-color: #2c3e57;
+  background: #0c1627;
+}
+body[data-ui="neo"] input::placeholder {
+  color: #546c8a;
+}
+body[data-ui="neo"] input:focus,
+body[data-ui="neo"] select:focus {
+  border-color: #68cebf;
+  box-shadow: 0 0 0 3px #66dfc915;
+}
+body[data-ui="neo"] .field label {
+  color: #9cb1c9;
+}
+body[data-ui="neo"] .field label span {
+  background: #253047;
+  color: #98adc5;
+}
+body[data-ui="neo"] .button.primary,
+body[data-ui="neo"] .camera-button {
+  background: linear-gradient(110deg, #75f0d6, #7ed4eb);
+  color: #09222b;
+  border-color: #73e8d3;
+  box-shadow: 0 5px 18px #4acdb114;
+}
+body[data-ui="neo"] .primary:hover:not(:disabled),
+body[data-ui="neo"] .camera-button:hover {
+  background: #a1ffe8;
+}
+body[data-ui="neo"] .secondary {
+  color: #adc4dd;
+  border-color: #33455f;
+  background: #1a2a40;
+}
+body[data-ui="neo"] .or-line:before {
+  background: #293b54;
+}
+body[data-ui="neo"] .or-line span {
+  background: #101b2e;
+  color: #6b83a2;
+}
+body[data-ui="neo"] .text-button {
+  color: #8ba9c8;
+}
+body[data-ui="neo"] .result-banner,
+body[data-ui="neo"] .password-result {
+  background: #163b3d;
+  border-color: #2a7770;
+  color: #aff5df;
+}
+body[data-ui="neo"] .result-stats,
+body[data-ui="neo"] .log-row,
+body[data-ui="neo"] .match-list button,
+body[data-ui="neo"] .campaign-footer {
+  border-color: #2a3a53;
+}
+body[data-ui="neo"] .magic-grid button,
+body[data-ui="neo"] .world-map button,
+body[data-ui="neo"] .hero-chip {
+  background: #142237;
+  color: #b5c9df;
+  border-color: #2f435d;
+}
+body[data-ui="neo"] .world-map .selected,
+body[data-ui="neo"] .hero-chip.active {
+  background: #1c3a43;
+  border-color: #438b87;
+}
+body[data-ui="neo"] .catalog-grid > button {
+  background: #152338;
+  border-color: #2c415d;
+  color: #d6e2f8;
+}
+body[data-ui="neo"] .catalog-code-mark {
+  background: #1f3446;
+  color: #80aeb4;
+}
+body[data-ui="neo"] .device-caption {
+  color: #7186a5;
+}
+body[data-ui="neo"] .bottom-strip,
+body[data-ui="neo"] footer {
+  border-color: #26344b;
+}
+body[data-ui="neo"] .bottom-strip span strong {
+  color: #8cc4c5;
+}
+body[data-ui="neo"] dialog {
+  background: #111e33;
+  border-color: #34465f;
+  color: #d7e5fc;
+}
+body[data-ui="neo"] .help-content p {
+  color: #9db0ca;
+}
+body[data-ui="neo"] .toast {
+  background: #1a3a48;
+  border-color: #386877;
+  color: #d7f9f0;
+}
+/* REIWA NEXT is a handheld toy concept: a frosted shell, one color display,
+   a thumb-operated action cluster, tactile function keys and an optical slot. */
+.neo-toy {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1000 / 690;
+  color: #214d49;
+  isolation: isolate;
+  filter: drop-shadow(0 18px 16px #0005);
+}
+.neo-toy-skin {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.neo-toy-brand {
+  position: absolute;
+  left: 20%;
+  top: 9.2%;
+  color: #244d43;
+  line-height: 1;
+  transform: rotate(-1deg);
+}
+.neo-toy-brand > span {
+  font:
+    600 0.8cqw / 1 Arial,
+    sans-serif;
+  letter-spacing: 0.18em;
+  display: block;
+  margin-bottom: 0.2cqw;
+}
+.neo-toy-brand > strong {
+  font:
+    900 5.7cqw / 0.9 Arial,
+    sans-serif;
+  letter-spacing: -0.08em;
+}
+.neo-toy-brand > strong > span {
+  color: #f27f91;
+  font-size: 5.6cqw;
+  letter-spacing: -0.2em;
+}
+.neo-toy-edition {
+  position: absolute;
+  left: 72%;
+  top: 13.3%;
+  font:
+    800 1.55cqw / 1.2 Arial,
+    sans-serif;
+  letter-spacing: 0.1em;
+  transform: rotate(9deg);
+  color: #365f54;
+}
+.neo-toy-edition > b {
+  font:
+    500 0.58cqw / 1.7 ui-monospace,
+    monospace;
+  letter-spacing: 0.13em;
+}
+.neo-display-bezel {
+  position: absolute;
+  left: 19.25%;
+  top: 19.6%;
+  width: 46.6%;
+  height: 45.3%;
+  padding: 0.6cqw;
+  background: #06111c;
+  border-radius: 2.5cqw;
+  box-shadow:
+    inset 0 0.2cqw 0.6cqw #a2ded22e,
+    0 0.15cqw 0.2cqw #ffffff80;
+  overflow: hidden;
+}
+.neo-display {
+  height: 100%;
+  padding: 1.3cqw 1.6cqw 0.9cqw;
+  position: relative;
+  border-radius: 2.1cqw;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 0 0, #2a69523b, transparent 80%),
+    linear-gradient(120deg, #101f2c, #172139);
+  color: #b5d9d8;
+  box-shadow: inset 0 0.4cqw 1cqw #0009;
+}
+.neo-display::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    145deg,
+    #e7fcff0f,
+    transparent 35%,
+    transparent 70%,
+    #efffff09
+  );
+}
+.neo-match-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font:
+    500 0.8cqw / 1.3 ui-monospace,
+    monospace;
+  color: #9fb4ca;
+  letter-spacing: 0.06em;
+  padding-bottom: 0.75cqw;
+  border-bottom: 1px solid #5d879331;
+}
+.neo-match-state i {
+  display: inline-block;
+  width: 0.45cqw;
+  height: 0.45cqw;
+  border-radius: 50%;
+  background: #b5ed9c;
+  margin-right: 0.6cqw;
+  box-shadow: 0 0 1cqw #91fda3a1;
+}
+.neo-players {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2cqw;
+  margin-top: 1cqw;
+}
+.neo-player {
+  min-width: 0;
+  color: #8cebd0;
+}
+.neo-player.challenger {
+  color: #cbb1ff;
+  padding-left: 1.5cqw;
+  border-left: 1px solid #74869d30;
+}
+.neo-player-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font:
+    500 0.65cqw / 1.3 ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+.neo-player.is-active .neo-player-head {
+  opacity: 1;
+}
+.neo-player-head > span:last-child {
+  font-size: 0.7cqw;
+}
+.neo-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.5cqw;
+  height: 8cqw;
+}
+.neo-emblem {
+  width: 7.4cqw;
+  height: 7.4cqw;
+  flex-shrink: 0;
+}
+.neo-avatar > div {
+  min-width: 0;
+}
+.neo-avatar > div > span {
+  display: block;
+  font-size: 0.8cqw;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.neo-avatar strong {
+  display: block;
+  margin-top: 0.3cqw;
+  color: #dce7f1;
+  font:
+    700 0.95cqw / 1.4 Arial,
+    sans-serif;
+  letter-spacing: 0.01em;
+}
+.neo-health {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.5cqw;
+}
+.neo-health > span:first-child {
+  font:
+    500 0.65cqw / 1.3 ui-monospace,
+    monospace;
+  color: #7a9cae;
+}
+.neo-health b {
+  display: block;
+  font:
+    500 3.5cqw / 1 Arial,
+    sans-serif;
+  color: #e1f8ef;
+  letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+  margin-top: 0.15cqw;
+}
+.challenger .neo-health b {
+  color: #ede1ff;
+}
+.neo-health > span:nth-child(2) {
+  font:
+    500 0.8cqw / 1.3 ui-monospace,
+    monospace;
+}
+.neo-health-track {
+  width: 100%;
+  height: 0.43cqw;
+  border-radius: 1cqw;
+  overflow: hidden;
+  background: #53707844;
+  margin-top: 0.4cqw;
+}
+.neo-health-track > i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: currentColor;
+  transition: width 0.25s;
+}
+.neo-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5cqw;
+  margin-top: 1.4cqw;
+}
+.neo-metrics span {
+  display: block;
+  font:
+    500 0.6cqw / 1.3 ui-monospace,
+    monospace;
+  color: #87a0b2;
+}
+.neo-metrics strong {
+  display: block;
+  margin-top: 0.5cqw;
+  color: #d3dfec;
+  font:
+    500 1.5cqw / 1.3 Arial,
+    sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.neo-display-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.8cqw;
+  color: #61818f;
+  font:
+    500 0.55cqw / 1.4 ui-monospace,
+    monospace;
+  letter-spacing: 0.08em;
+}
+.neo-display-footer > span:last-child {
+  letter-spacing: 0.5cqw;
+  color: #88cab5;
+  font-size: 0.6cqw;
+}
+.neo-display-off {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, #15242c, #0d1623);
+  display: grid;
+  place-items: center;
+  color: #55747c;
+  font:
+    500 1.8cqw / 1 ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+}
+.neo-off .neo-players,
+.neo-off .neo-match-state,
+.neo-off .neo-display-footer {
+  visibility: hidden;
+}
+.neo-thumb-label {
+  position: absolute;
+  left: 76%;
+  top: 26.6%;
+  font:
+    700 0.8cqw / 1.3 Arial,
+    sans-serif;
+  letter-spacing: 0.12em;
+  color: #746a86;
+  display: flex;
+  gap: 0.6cqw;
+  align-items: center;
+  transform: rotate(8deg);
+}
+.neo-thumb-label > i {
+  width: 0.6cqw;
+  height: 0.6cqw;
+  border-radius: 100%;
+  background: #96a29b;
+  box-shadow: 0 0 0 0.3cqw #adb3b1;
+}
+.neo-thumb-label > i.on {
+  background: #c4ffa1;
+  box-shadow:
+    0 0 0.6cqw #c4ffa1,
+    0 0 0 0.3cqw #99a18d;
+}
+.neo-toy-action {
+  position: absolute;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #294847;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  min-width: 44px;
+  min-height: 44px;
+}
+.toy-battle {
+  left: 77%;
+  top: 34%;
+  width: 13.8%;
+}
+.toy-power {
+  left: 70%;
+  top: 53%;
+  width: 9.7%;
+  color: #6b546a;
+}
+.toy-button-face {
+  position: absolute;
+  inset: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 24%,
+    #f4ffd6,
+    #d5fca4 57%,
+    #a9d472 83%,
+    #ebffbf
+  );
+  border: 0.25cqw solid #9cbe7b;
+  box-shadow:
+    0 0.65cqw 0.1cqw #697665,
+    0 0.8cqw 0.35cqw #222f3b80,
+    0 0 0 0.9cqw #a3a4b42e,
+    inset 0.1cqw 0.25cqw 0.5cqw #fff9;
+  transform: rotate(8deg);
+}
+.toy-power .toy-button-face {
+  background: radial-gradient(
+    circle at 38% 24%,
+    #ffe4e6,
+    #f2b5c4 57%,
+    #d68ca4 83%,
+    #ffd1df
+  );
+  border-color: #c78fa8;
+  box-shadow:
+    0 0.5cqw 0.1cqw #9c758f,
+    0 0.7cqw 0.35cqw #222f3b80,
+    0 0 0 0.7cqw #b4a3b52e,
+    inset 0.1cqw 0.25cqw 0.5cqw #fff9;
+  transform: rotate(-12deg);
+}
+.toy-button-face > i {
+  font:
+    500 3.9cqw / 1 Arial,
+    sans-serif;
+  font-style: normal;
+}
+.toy-button-face > b {
+  font:
+    800 1cqw / 1.6 Arial,
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.toy-power .toy-button-face > i {
+  font-size: 3cqw;
+}
+.toy-power .toy-button-face > b {
+  font-size: 0.8cqw;
+}
+.neo-toy-action:disabled {
+  opacity: 1;
+  cursor: not-allowed;
+}
+.neo-toy-action:disabled .toy-button-face {
+  filter: saturate(0.65) brightness(0.87);
+}
+.neo-toy-action:not(:disabled):hover .toy-button-face {
+  filter: brightness(1.07);
+}
+.neo-toy-action:not(:disabled):active .toy-button-face {
+  translate: 0 0.45cqw;
+  box-shadow:
+    0 0.2cqw 0.1cqw #697665,
+    0 0.3cqw 0.3cqw #222f3b80,
+    inset 0.1cqw 0.25cqw 0.5cqw #fff9;
+}
+.neo-toy-action:focus-visible {
+  outline: 2px solid #f4ffd5;
+  outline-offset: 0.8cqw;
+}
+.neo-physical-keys {
+  position: absolute;
+  left: 22%;
+  top: 68.9%;
+  width: 38%;
+  height: 12%;
+  display: flex;
+  justify-content: space-between;
+  gap: 2cqw;
+}
+.neo-physical-keys > button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1cqw;
+  width: 27%;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: #3c6663;
+}
+.neo-function-face {
+  width: 90%;
+  height: 3cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 2cqw;
+  font:
+    700 2cqw / 1 Arial,
+    sans-serif;
+  color: #3b6062;
+  background: linear-gradient(#fbfffc, #e1efef 50%, #bed3d5);
+  border: 0.13cqw solid #b9cfd0;
+  box-shadow:
+    0 0.5cqw 0 #9bb9b6,
+    0 0.6cqw 0.4cqw #284e4a55,
+    inset 0 0.15cqw 0.2cqw #fff,
+    0 0 0 0.4cqw #759c9224;
+}
+.neo-physical-keys > button small {
+  font:
+    700 0.65cqw / 1 Arial,
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.neo-physical-keys > button:not(:disabled):active .neo-function-face {
+  translate: 0 0.3cqw;
+  box-shadow: 0 0.2cqw 0 #9bb9b6;
+}
+.neo-physical-keys > button:disabled {
+  opacity: 0.5;
+}
+.neo-physical-keys > button:focus-visible {
+  outline: 2px solid #2f7569;
+  outline-offset: 0.4cqw;
+  border-radius: 1.2cqw;
+}
+.neo-optical-reader {
+  position: absolute;
+  left: 24.4%;
+  top: 80.2%;
+  width: 42.1%;
+  height: 13%;
+  border: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.8cqw 0.7cqw;
+  color: #406b60;
+}
+.neo-optical-reader > span {
+  font:
+    700 0.85cqw / 1.4 Arial,
+    sans-serif;
+  letter-spacing: 0.2em;
+}
+.neo-optical-reader > i {
+  display: block;
+  width: 91%;
+  height: 2.6cqw;
+  border-radius: 1.7cqw;
+  box-shadow: 0 0 1.6cqw #e0ff8c44;
+}
+.neo-optical-reader > small {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  font:
+    700 0.6cqw / 1 Arial,
+    sans-serif;
+  letter-spacing: 0.14em;
+}
+.neo-optical-reader b {
+  font-size: 1.3cqw;
+}
+.neo-optical-reader:hover > i {
+  background: #d7ff8a22;
+  box-shadow: 0 0 2cqw #e0ff8c88;
+}
+.neo-optical-reader:focus-visible {
+  outline: 2px solid #244a44;
+  outline-offset: 0.5cqw;
+  border-radius: 1.5cqw;
+}
+.neo-case-detail {
+  position: absolute;
+  left: 71%;
+  top: 76%;
+  color: #49776a;
+  font:
+    500 0.65cqw / 1.8 ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+  transform: rotate(-8deg);
+}
+.neo-device .device-hud p {
+  color: #849db9;
+}
+.neo-device .device-hud .text-button {
+  color: #91b5d0;
+}
+@media (max-width: 780px) {
+  .toy-battle {
+    top: 32%;
+  }
+  .toy-power {
+    top: 55%;
+  }
+
+  .design-switcher {
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 12px 0;
+  }
+  .design-switcher > span {
+    font-size: 8px;
+  }
+  .design-options {
+    margin-left: auto;
+  }
+  .design-options button {
+    padding: 8px 11px;
+    font-size: 9px;
+    gap: 6px;
+  }
+  .design-options button small {
+    font-size: 7px;
+  }
+  .design-note {
+    display: none;
+  }
+  .neo-physical-keys {
+    top: 65.5%;
+    height: 15.2%;
+  }
+  .neo-physical-keys > button {
+    min-width: 40px;
+    min-height: 0;
+    gap: 1.7cqw;
+  }
+  .neo-function-face {
+    font-size: 2.7cqw;
+    height: 3.9cqw;
+  }
+  .neo-physical-keys > button small {
+    font-size: max(5px, 0.65cqw);
+  }
+  .neo-optical-reader {
+    top: 81.5%;
+    height: 14.5%;
+    justify-content: center;
+    gap: 1.8cqw;
+  }
+  .neo-display {
+    padding: 1.5cqw 1.6cqw 1cqw;
+  }
+  .neo-display-bezel {
+    height: 45.3%;
+  }
+  .neo-avatar {
+    height: 7.1cqw;
+  }
+  .neo-emblem {
+    width: 6.4cqw;
+    height: 6.4cqw;
+  }
+  .neo-health b {
+    font-size: 3.8cqw;
+  }
+  .neo-metrics strong {
+    font-size: 1.8cqw;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .neo-health-track > i {
+    transition: none;
+  }
+}

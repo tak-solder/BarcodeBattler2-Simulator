@@ -1,4 +1,7 @@
 import "./style.css";
+import { hardware, hardwareLCD } from "./hardware";
+import { neoHardware } from "./neo";
+import type { HardwareView } from "./hardware";
 import {
   readCard,
   fighterFrom,
@@ -73,6 +76,7 @@ let mode: "ONLINE" | Mode | "CARDS" = "ONLINE",
   busy = false,
   selected: Card | null = null,
   selectedLoadout: Loadout | null = null,
+  selectedPreview: Fighter | undefined,
   selectedProduct: any = null;
 let battle: Battle | null = null,
   campaign: Campaign | null = null,
@@ -88,6 +92,17 @@ let fields: Record<string, string> = {
   password: "",
   shift: "0",
 };
+type Appearance = "classic" | "neo";
+function initialAppearance(): Appearance {
+  try {
+    return localStorage.getItem("bb2-ui") === "neo" ? "neo" : "classic";
+  } catch {
+    return "classic";
+  }
+}
+let appearance = initialAppearance();
+let devicePowered = true;
+let deviceResources = false;
 const localStates = new Map<string, any>();
 const app = document.querySelector<HTMLDivElement>("#app")!;
 async function api(path: string, method = "GET", data?: unknown) {
@@ -194,31 +209,60 @@ function currentBattle(): Battle | null {
     ? (onlineResult?.battle ?? viewReplay?.battle)
     : battle;
 }
-function device() {
+function deviceView(): HardwareView {
   const b = currentBattle();
-  const a =
-      b?.fighters[0] ??
-      (selected
-        ? selectedLoadout
-          ? fighterFrom(selectedLoadout)
-          : fighterFromSafe(selected)
-        : undefined),
-    d = b?.fighters[1];
-  const latest = b?.log?.at(-1);
-  const title =
-    mode === "ONLINE"
-      ? "ONLINE ARENA"
-      : mode === "CARDS"
-        ? "CARD ARCHIVE"
-        : `${mode} MODE`;
-  return `<section class="device" aria-label="バーコードバトラー2 シミュレータ"><div class="screw top-left"></div><div class="screw top-right"></div><div class="device-brand"><div><span class="device-eyebrow">THE ORIGINAL CODE BATTLE</span><h2>BARCODE <strong>BATTLER <em>II</em></strong></h2></div><div class="model">WEB<br><b>1991 / 2026</b></div></div><div class="lcd-frame"><div class="lcd"><div class="lcd-top"><span><i class="lcd-dot"></i> ${title}</span><span>${b ? `STAR ${["☀", "☾", "✦"][b.star]}` : "SYSTEM READY"}</span></div><div class="lcd-arena"><div class="lcd-fighter ${b?.player === 0 && b.winner === null ? "active" : ""}"><span class="lcd-side">1P ${a ? (a.job > 6 ? "MAGICIAN" : "WARRIOR") : ""}</span>${sprite(a?.race1 ?? selected?.race ?? 4)}<span class="lcd-name">${a ? esc(RACES[a.race1]) : "YOUR FIGHTER"}</span></div><div class="lcd-vs"><span>VS</span><div class="battle-lights">● ● ● ● ●</div></div><div class="lcd-fighter ${b?.player === 1 && b.winner === null ? "active" : ""}"><span class="lcd-side">2P ${d ? (d.job > 6 ? "MAGICIAN" : "WARRIOR") : ""}</span>${sprite(d?.race1 ?? 0, true)}<span class="lcd-name">${d ? esc(RACES[d.race1]) : "CHALLENGER"}</span></div></div><div class="lcd-stats"><div class="lcd-stat-label"><span>HP</span><span>ST</span><span>DF</span></div><div class="lcd-stat-values"><b>${fmt(a?.hp)}</b><span>${fmt(a?.st)}</span><span>${fmt(a?.df)}</span></div><div class="lcd-stat-values"><b>${fmt(d?.hp)}</b><span>${fmt(d?.st)}</span><span>${fmt(d?.df)}</span></div></div><div class="lcd-message">${b ? (b.winner === null ? `${b.player + 1}P TURN · ${latest ? esc(latest.action + " " + (latest.damage ? latest.damage * 100 + " DAMAGE" : latest.message)) : "バトル開始"}` : b.winner === -1 ? "DRAW — TURN LIMIT" : `${b.winner + 1}P WINS · ${b.turn} TURNS`) : selected ? "CODE ACCEPTED — READY TO BATTLE" : "SCAN A BARCODE. FIND YOUR POWER."}</div></div></div><div class="device-bottom"><div class="speaker" aria-hidden="true">${"<i></i>".repeat(7)}</div><div class="device-buttons"><button class="hardware power" data-action="power" ${!canAct() ? "disabled" : ""}>POWER<span>回復</span></button><button class="hardware battle" data-action="attack" ${!canAct() ? "disabled" : ""}>BATTLE<span>攻撃</span></button></div><div class="device-serial">BB–II<br>WEB EDITION</div></div><div class="screw bottom-left"></div><div class="screw bottom-right"></div></section>`;
+  const a = b?.fighters[0] ?? (selected ? selectedPreview : undefined);
+  const d = b?.fighters[1];
+  const latest = b?.log.at(-1);
+  const activePlayer = b?.winner === null ? b.player : null;
+  const available = (side: number) =>
+    devicePowered && canAct() && battle?.player === side;
+  const canAttack: [boolean, boolean] = [!!available(0), !!available(1)];
+  const canPower: [boolean, boolean] = [0, 1].map(
+    (side) =>
+      !!available(side) &&
+      (b?.fighters[side].pp ?? 0) > 0 &&
+      !b?.fighters[side].pp_ignore_flag,
+  ) as [boolean, boolean];
+  let message = selected
+    ? "コード読取完了 · バトルを開始できます"
+    : "CARD IN · バーコードを読み込んでください";
+  if (b)
+    message =
+      b.winner === null
+        ? `${b.player + 1}P のターン${latest ? ` · ${latest.action} · ${latest.damage ? latest.damage * 100 + " ダメージ" : latest.message}` : ""}`
+        : b.winner === -1
+          ? "引き分け · ターン上限"
+          : `${b.winner + 1}P の勝利 · ${b.turn}ターン`;
+  return {
+    powered: devicePowered,
+    resources: deviceResources,
+    fighters: [a, d],
+    activePlayer,
+    winner: b?.winner ?? null,
+    mode: mode === "ONLINE" ? "ONLINE" : mode,
+    turn: b?.turn ?? 0,
+    message,
+    canAttack,
+    canPower,
+    busy,
+  };
 }
-function fighterFromSafe(c: Card) {
-  try {
-    return fighterFrom({ barcode: c.barcode });
-  } catch {
-    return undefined;
-  }
+function device() {
+  return appearance === "classic"
+    ? hardware(deviceView())
+    : neoHardware(deviceView());
+}
+function enlargeLCD() {
+  const dialog = document.createElement("dialog");
+  dialog.className = "lcd-dialog";
+  dialog.innerHTML = `<div class="dialog-head"><div><span class="eyebrow">BARCODE BATTLER II</span><h2>液晶表示</h2></div><button class="icon-btn" aria-label="閉じる">×</button></div>${hardwareLCD(deviceView())}<p class="muted">${esc(deviceView().message)}</p>`;
+  document.body.append(dialog);
+  dialog
+    .querySelector("button")!
+    .addEventListener("click", () => dialog.close());
+  dialog.addEventListener("close", () => dialog.remove());
+  dialog.showModal();
 }
 function canAct() {
   return (
@@ -332,6 +376,7 @@ function catalogPanel() {
     )}</div>${cards.length ? "" : "<p>該当するカードがありません。</p>"}</section>`;
 }
 function render() {
+  document.body.dataset.ui = appearance;
   const descriptions: Record<string, [string, string, string]> = {
     ONLINE: [
       "THE EVERYDAY BECOMES EPIC.",
@@ -365,7 +410,7 @@ function render() {
     )
     .join(
       "",
-    )}</nav><section class="intro"><div><span class="eyebrow">${desc[0]}</span><h1>${desc[1]}<br><em>${desc[2]}</em></h1></div><p>読み込む。戦う。勝ち抜く。<br>手のひらの冒険が、ブラウザでよみがえる。</p></section>${mode === "CARDS" ? catalogPanel() : `<div class="play-layout"><div class="play-main">${device()}<div class="device-caption"><span><i></i> BARCODE BATTLER II</span><span>オリジナルロジックをブラウザへ</span></div>${fighterCard()}${mode === "ONLINE" && onlineResult ? `<div class="result-banner">${icon("cup")}<div><strong>${onlineResult.outcome === "crown" ? "初代王者になりました！" : onlineResult.outcome === "win" ? "勝利！新しい王者です。" : onlineResult.outcome === "draw" ? "引き分け。王者は防衛継続。" : "王者が防衛しました。"}</strong><p>${onlineResult.streak}連勝 · ${onlineResult.battle?.turn ?? 0}ターン</p></div></div>` : ""}${mode === "ONLINE" ? duelProducts() : ""}${mode !== "ONLINE" ? battleControls() : championPanel()}${historyPanel()}</div><aside class="play-sidebar">${mode === "ONLINE" ? roomPanel() : `<section class="panel mode-info"><span class="eyebrow">${mode} MODE</span><h2>${mode === "C0" ? "ふたりで対戦" : mode === "C1" ? "内蔵ワールドを冒険" : "自分のカードで冒険"}</h2><p>${mode === "C0" ? "2人のバーコードをセットして交互に操作。合体・装備・魔法で戦略を組み立てよう。" : mode === "C1" ? "戦士と魔法使いを登録。5つのワールドで鍵を集め、L-Hのボスに挑もう。" : "戦士と魔法使いを登録し、読み込んだ敵カードとバトル。パスコードからも始められます。"}</p>${mode === "C1" || mode === "C2" ? `<button class="text-button" data-action="load">${icon("save")} 前回の冒険をロード</button>` : ""}</section>`}${campaign && mode !== "ONLINE" ? campaignPanel() : ""}${scanPanel()}${mode !== "ONLINE" ? `<button class="button primary full start-button" data-action="start" ${busy ? "disabled" : ""}>${campaign ? "新しい冒険を始める" : mode === "C0" ? "バトルを始める" : "冒険を始める"} ${icon("arrow")}</button>` : ""}<div class="side-tip"><span>遊び方のヒント</span><p>強さは値段で決まらない。<br>気になる商品があったら、読み込んでみよう。</p><button class="text-button" data-action="help">操作ガイド ${icon("arrow")}</button></div></aside></div>`}<section class="bottom-strip"><div>${icon("scan")}<span><strong>SCAN</strong>身近なバーコードを読む</span></div><span class="strip-plus">＋</span><div>${icon("bolt")}<span><strong>DISCOVER</strong>隠れた能力を見つける</span></div><span class="strip-plus">＝</span><div>${icon("cup")}<span><strong>BATTLE</strong>あなただけの戦士で挑む</span></div></section></main><footer><span>${logo()} BARCODE BATTLER II <small>UNOFFICIAL WEB SIMULATOR</small></span><div><a href="https://github.com/finalfighter/BarcodeBattler2-Simulator" target="_blank" rel="noopener">Based on finalfighter's simulator ↗</a><button class="text-button" data-action="help">このシミュレータについて</button></div></footer><div class="sr-only" role="status" aria-live="polite">${busy ? "処理中" : currentBattle()?.winner !== null && currentBattle() ? `対戦終了 ${currentBattle()!.winner! + 1}P勝利` : ""}</div>`;
+    )}</nav><div class="design-switcher"><span>INTERFACE</span><div class="design-options" role="group" aria-label="UIデザイン"><button data-appearance="classic" aria-pressed="${appearance === "classic"}"><b>1992</b><small>実機スタイル</small></button><button data-appearance="neo" aria-pressed="${appearance === "neo"}"><b>REIWA NEXT</b><small>次世代スタイル</small></button></div><span class="design-note">同じバトルを、ふたつのスタイルで。</span></div><section class="intro"><div><span class="eyebrow">${desc[0]}</span><h1>${desc[1]}<br><em>${desc[2]}</em></h1></div><p>読み込む。戦う。勝ち抜く。<br>手のひらの冒険が、ブラウザでよみがえる。</p></section>${mode === "CARDS" ? catalogPanel() : `<div class="play-layout"><div class="play-main">${device()}<div class="device-caption"><span><i></i> BARCODE BATTLER II</span><span>${appearance === "classic" ? "CONVENI WARS · 実機スタイル" : "REIWA NEXT · 次世代スタイル"}</span></div>${fighterCard()}${mode === "ONLINE" && onlineResult ? `<div class="result-banner">${icon("cup")}<div><strong>${onlineResult.outcome === "crown" ? "初代王者になりました！" : onlineResult.outcome === "win" ? "勝利！新しい王者です。" : onlineResult.outcome === "draw" ? "引き分け。王者は防衛継続。" : "王者が防衛しました。"}</strong><p>${onlineResult.streak}連勝 · ${onlineResult.battle?.turn ?? 0}ターン</p></div></div>` : ""}${mode === "ONLINE" ? duelProducts() : ""}${mode !== "ONLINE" ? battleControls() : championPanel()}${historyPanel()}</div><aside class="play-sidebar">${mode === "ONLINE" ? roomPanel() : `<section class="panel mode-info"><span class="eyebrow">${mode} MODE</span><h2>${mode === "C0" ? "ふたりで対戦" : mode === "C1" ? "内蔵ワールドを冒険" : "自分のカードで冒険"}</h2><p>${mode === "C0" ? "2人のバーコードをセットして交互に操作。合体・装備・魔法で戦略を組み立てよう。" : mode === "C1" ? "戦士と魔法使いを登録。5つのワールドで鍵を集め、L-Hのボスに挑もう。" : "戦士と魔法使いを登録し、読み込んだ敵カードとバトル。パスコードからも始められます。"}</p>${mode === "C1" || mode === "C2" ? `<button class="text-button" data-action="load">${icon("save")} 前回の冒険をロード</button>` : ""}</section>`}${campaign && mode !== "ONLINE" ? campaignPanel() : ""}${scanPanel()}${mode !== "ONLINE" ? `<button class="button primary full start-button" data-action="start" ${busy ? "disabled" : ""}>${campaign ? "新しい冒険を始める" : mode === "C0" ? "バトルを始める" : "冒険を始める"} ${icon("arrow")}</button>` : ""}<div class="side-tip"><span>遊び方のヒント</span><p>強さは値段で決まらない。<br>気になる商品があったら、読み込んでみよう。</p><button class="text-button" data-action="help">操作ガイド ${icon("arrow")}</button></div></aside></div>`}<section class="bottom-strip"><div>${icon("scan")}<span><strong>SCAN</strong>身近なバーコードを読む</span></div><span class="strip-plus">＋</span><div>${icon("bolt")}<span><strong>DISCOVER</strong>隠れた能力を見つける</span></div><span class="strip-plus">＝</span><div>${icon("cup")}<span><strong>BATTLE</strong>あなただけの戦士で挑む</span></div></section></main><footer><span>${logo()} BARCODE BATTLER II <small>UNOFFICIAL WEB SIMULATOR</small></span><div><a href="https://github.com/finalfighter/BarcodeBattler2-Simulator" target="_blank" rel="noopener">Based on finalfighter's simulator ↗</a><button class="text-button" data-action="help">このシミュレータについて</button></div></footer><div class="sr-only" role="status" aria-live="polite">${busy ? "処理中" : currentBattle()?.winner !== null && currentBattle() ? `対戦終了 ${currentBattle()!.winner! + 1}P勝利` : ""}</div>`;
   bind();
 }
 async function refresh() {
@@ -382,6 +427,7 @@ function setMode(next: typeof mode) {
     campaign,
     selected,
     selectedLoadout,
+    selectedPreview,
     selectedProduct,
   });
   mode = next;
@@ -399,6 +445,7 @@ function setMode(next: typeof mode) {
   campaign = s?.campaign ?? null;
   selected = s?.selected ?? null;
   selectedLoadout = s?.selectedLoadout ?? null;
+  selectedPreview = s?.selectedPreview;
   selectedProduct = s?.selectedProduct ?? null;
   render();
 }
@@ -413,11 +460,13 @@ function loadout(two = false): Loadout {
 }
 async function read() {
   const l = loadout();
-  selected = readCard(l.barcode, {
+  const card = readCard(l.barcode, {
     hero: mode === "C1" || mode === "C2",
     job: mode === "C1" || mode === "C2" ? "warrior" : undefined,
   });
-  if (l.support) fighterFrom(l);
+  const preview = fighterFrom(l);
+  selected = card;
+  selectedPreview = preview;
   selectedLoadout = l;
   selectedProduct = null;
   if (mode === "ONLINE" && connected) {
@@ -530,6 +579,49 @@ function askValue(
   d.showModal();
 }
 function bind() {
+  app.querySelectorAll<HTMLElement>("[data-appearance]").forEach((el) =>
+    el.addEventListener("click", () => {
+      appearance = el.dataset.appearance as Appearance;
+      try {
+        localStorage.setItem("bb2-ui", appearance);
+      } catch {
+        /* Preference persistence is optional. */
+      }
+      render();
+      app
+        .querySelector<HTMLElement>(`[data-appearance="${appearance}"]`)
+        ?.focus({ preventScroll: true });
+    }),
+  );
+
+  app.querySelectorAll<HTMLElement>("[data-device]").forEach((el) =>
+    el.addEventListener("click", () => {
+      switch (el.dataset.device) {
+        case "power":
+          devicePowered = !devicePowered;
+          render();
+          break;
+        case "select":
+          deviceResources = !deviceResources;
+          render();
+          break;
+        case "enlarge":
+          enlargeLCD();
+          break;
+        case "set":
+          if (fields.barcode) void run(() => read());
+          else {
+            document.querySelector<HTMLInputElement>("#barcode")?.focus();
+            document
+              .querySelector(".scan-panel")
+              ?.scrollIntoView({ behavior: "smooth", block: "center" });
+            toast("キャラクターのバーコードを入力してください。");
+          }
+          break;
+      }
+    }),
+  );
+
   app
     .querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-field]")
     .forEach((el) =>
@@ -634,6 +726,11 @@ function bind() {
   app.querySelectorAll<HTMLElement>("[data-action]").forEach((el) =>
     el.addEventListener("click", () => {
       const action = el.dataset.action;
+      if (
+        el.dataset.side !== undefined &&
+        (!devicePowered || battle?.player !== Number(el.dataset.side))
+      )
+        return;
       if (action === "help") {
         help();
         return;

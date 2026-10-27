@@ -10,14 +10,19 @@
     "dev": "wrangler dev",
     "build": "vite build",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.worker.json",
-    "test": "node --import tsx tests/engine.test.ts",
+    "test": "node --import tsx tests/engine.test.ts && node tests/preview.test.mjs",
     "check": "npm run typecheck && npm test && npm run build && wrangler deploy --dry-run",
     "db:local": "wrangler d1 migrations apply DB --local",
     "db:remote": "wrangler d1 migrations apply DB --remote",
     "deploy": "npm run build && wrangler deploy",
     "port": "node scripts/port-engine.mjs",
     "test:e2e": "playwright test",
-    "predeploy": "node scripts/check-deploy.mjs"
+    "predeploy": "node scripts/check-deploy.mjs",
+    "preview": "npm run build && node scripts/preview.mjs deploy",
+    "preview:deploy": "node scripts/preview.mjs deploy",
+    "preview:check": "node scripts/preview.mjs check",
+    "preview:dry-run": "npm run build && node scripts/preview.mjs dry-run",
+    "db:preview": "node scripts/preview.mjs migrate"
   },
   "dependencies": {
     "@zxing/browser": "0.2.1",
@@ -26,13 +31,13 @@
   "devDependencies": {
     "@babel/core": "8.0.9",
     "@babel/plugin-transform-typescript": "8.0.6",
-    "@cloudflare/workers-types": "5.20261026.1",
+    "@cloudflare/workers-types": "5.20261027.1",
     "@playwright/test": "1.64.1",
     "@types/node": "26.6.5",
     "prettier": "3.9.10",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "8.3.5",
-    "wrangler": "4.152.0"
+    "wrangler": "4.153.0"
   }
 }
