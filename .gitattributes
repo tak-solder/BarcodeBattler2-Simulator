@@ -1,0 +1,2 @@
+# Preserve the verbatim upstream source, including its original whitespace.
+vendor/reference/** -whitespace
